@@ -57,24 +57,25 @@ public class AdminService {
         postDao.updatePost(post);
     }
     
+    public void deletePost(int id){
+        postDao.deletePost(id);
+    }
+    
     private Set<Hashtag> convertHashtags(String hashtags){
         String[] hashtagsArr = hashtags.split("#");
         Set<Hashtag> tags = tagDao.readHashtags();
         Set<Hashtag> postTags = new HashSet<>();
-        
+        Set<String> tagsName = new HashSet<>();
+        if(!tags.isEmpty()){
+           for(Hashtag tag: tags){
+            tagsName.add(tag.getName());
+            } 
+        }
         for(int i = 1; i<hashtagsArr.length; i++){
-            if(tags.isEmpty()){
+            if(!tagsName.contains(hashtagsArr[i])){
                 Hashtag tag = new Hashtag();
-                    tag.setName(hashtagsArr[i]);
-                    tagDao.createHashtag(tag);
-            }else{
-                for(Hashtag currTag: tags){
-                    if(!currTag.getName().equals(hashtagsArr[i])){
-                        Hashtag tag = new Hashtag();
-                        tag.setName(hashtagsArr[i]);
-                        tagDao.createHashtag(tag);
-                    }
-                }
+                tag.setName(hashtagsArr[i]);
+                tagDao.createHashtag(tag);
             }
             postTags.add(tagDao.readHashtagByName(hashtagsArr[i]));
         }

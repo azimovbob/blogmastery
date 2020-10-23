@@ -102,7 +102,7 @@ public class PostDaoDB implements PostDao {
     }
 
     private void insertPostHashtags(Post post) {
-        final String insertPostHastagsQuery = "INSERT INTO post_hashtag(postId, hashtagId) VALUES(?, ?)";
+        final String insertPostHastagsQuery = "INSERT INTO post_hashtag(postId, hashtagId) VALUES(?,?)";
         for(Hashtag tag: post.getHashtags()){
             jdbc.update(insertPostHastagsQuery, post.getId(), tag.getId());
         }

@@ -92,4 +92,10 @@ public class AdminController {
         service.updatePost(post, hashtags);
         return "redirect:/admin";
     }
+    
+    @PostMapping("/deleteBlog")
+    public String deleteBlog(Integer id){
+        service.deletePost(id);
+        return "redirect:/admin";
+    }
 }
