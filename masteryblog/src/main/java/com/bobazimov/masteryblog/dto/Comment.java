@@ -7,6 +7,8 @@ package com.bobazimov.masteryblog.dto;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -14,10 +16,18 @@ import java.util.Objects;
  */
 public class Comment {
     private int id;
+    
+    @NotBlank(message="Text must be not empty")
+    @Size(max=255, message="Text must be less than 255 characteres")
     private String text;
+    
     private User user;
     private LocalDate date;
+    
+    @NotBlank(message="Title must be not empty")
+    @Size(max=45, message="Text must be less than 255 characteres")
     private String title;
+    
     private int postId;
 
     public int getPostId() {

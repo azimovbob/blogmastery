@@ -8,6 +8,9 @@ package com.bobazimov.masteryblog.dto;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -15,7 +18,12 @@ import java.util.Set;
  */
 public class Post {
     private int id;
+    
+    @NotBlank(message="Content must be not empty")
     private String content;
+    
+    @NotBlank(message="Title must be not empty")
+    @Size(max=255, message="Title must be less than 255 characteres")
     private String title;
     private boolean isaApproved;
     private boolean isStatic;
@@ -23,6 +31,27 @@ public class Post {
     private LocalDate expDate;
     private Set<Comment> comments;
     private Set<Hashtag> hashtags;
+    private String fileName;
+    
+    @NotBlank(message="Description must be not empty")
+    @Size(max=255, message="Description must be less than 255 characteres")
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public Set<Comment> getComments() {
         return comments;

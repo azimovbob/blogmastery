@@ -25,10 +25,10 @@ public class UserDaoDB implements UserDao {
     @Override
     @Transactional
     public User createUser(User user) {
-        final String createQuery = "INSERT INTO user(username, email, password, role, enable) "
-                + "VALUES(?,?,?,?,?)";
+        final String createQuery = "INSERT INTO user(username, email, password, role, enable, photofilename) "
+                + "VALUES(?,?,?,?,?,?)";
         jdbc.update(createQuery, user.getUsername(), user.getEmail(), user.getPassword(), 
-                user.getRole(), user.isEnabled());
+                user.getRole(), user.isEnabled(), user.getFileName());
         int id = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         user.setId(id);
         return user;
@@ -100,6 +100,7 @@ public class UserDaoDB implements UserDao {
            user.setPassword(rs.getString("password"));
            user.setRole(rs.getString("role"));
            user.setEnabled(rs.getBoolean("enable"));
+           user.setFileName(rs.getString("photofilename"));
            return user;
         }
     }

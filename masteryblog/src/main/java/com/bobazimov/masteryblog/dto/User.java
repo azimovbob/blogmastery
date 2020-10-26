@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package com.bobazimov.masteryblog.dto;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -13,12 +15,31 @@ import java.util.Objects;
  */
 public class User {
     private int id;
+    
+    @NotBlank(message ="Username must not be blank")
+    @Size(max=30, message="Username must be less than 30 characters")
     private String username;
+    
+    @NotBlank(message ="Passwod must not be blank")
+    @NotNull(message ="Passwod must not be empty")
     private String password;
+    
+    @NotBlank(message ="Email must not be blank")
+    @Size(max=30, message="Email must be less than 30 characters")
     private String email;
+    
     private String role;
     private boolean enabled;
+    private String fileName;
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+    
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + ", enabled=" + enabled + '}';

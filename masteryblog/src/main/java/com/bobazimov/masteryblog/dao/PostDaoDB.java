@@ -33,10 +33,10 @@ public class PostDaoDB implements PostDao {
     @Override
     @Transactional
     public Post createContent(Post post) {
-        final String createQuery = "INSERT INTO post(title, content, date, exp_date, static, approved) "
-                + "VALUES(?,?,?,?,?,?)";
+        final String createQuery = "INSERT INTO post(title, content, photofilename, description, date, exp_date, static, approved) "
+                + "VALUES(?,?,?,?,?,?,?,?)";
         jdbc.update(createQuery,
-                    post.getTitle(), post.getContent(), post.getPostDate(), post.getExpDate(), 
+                    post.getTitle(), post.getContent(), post.getFileName(), post.getDescription(), post.getPostDate(), post.getExpDate(), 
                     post.isIsStatic(), post.isIsaApproved());
         int id = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         post.setId(id);
@@ -100,6 +100,19 @@ public class PostDaoDB implements PostDao {
     public List<Hashtag> readAllHashtags(Post post) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    
+    @Override
+    public List<Post> readPostByCategory(String tagName) {
+        final String query = "select p.* from post p " +
+                              "join post_hashtag ph on p.id = ph.postId " +
+                              "join hashtag h on h.id = ph.hashtagId " +
+                              "where h.name = ?";
+        List<Post> posts = jdbc.query(query, new PostMapper(), tagName);
+        assosiateUserCommentsHashtags(posts);
+        return posts;
+    }
+    
 
     private void insertPostHashtags(Post post) {
         final String insertPostHastagsQuery = "INSERT INTO post_hashtag(postId, hashtagId) VALUES(?,?)";
@@ -120,6 +133,7 @@ public class PostDaoDB implements PostDao {
         List<Comment> comments = jdbc.query(readCommentsQuery, new CommentMapper(), id);
         Set<Comment> commentsSet = new HashSet<>();
         for(Comment comment: comments){
+            comment.setUser(getUserForComment(comment.getId()));
             commentsSet.add(comment);
         }
         return commentsSet;
@@ -143,7 +157,13 @@ public class PostDaoDB implements PostDao {
             post.setHashtags(getHashtagsForPost(post.getId()));
         }
     }
-    
+
+    private User getUserForComment(int id) {
+        final String query = "SELECT u.* FROM user u "
+                + "JOIN comment c ON c.userId = u.id "
+                + "WHERE c.id = ?";
+        return jdbc.queryForObject(query, new UserMapper(), id);
+    }
     
     public final static class PostMapper implements RowMapper<Post>{
 
@@ -154,10 +174,13 @@ public class PostDaoDB implements PostDao {
             post.setTitle(rs.getString("title"));
             post.setContent(rs.getString("content"));
             post.setIsStatic(rs.getBoolean("static"));
-            post.setExpDate(rs.getDate("exp_date").toLocalDate());
+            if(rs.getDate("exp_date")!=null){
+                post.setExpDate(rs.getDate("exp_date").toLocalDate());
+            }
             post.setIsaApproved(rs.getBoolean("approved"));
             post.setPostDate(rs.getDate("date").toLocalDate());
-
+            post.setFileName(rs.getString("photofilename"));
+            post.setDescription(rs.getString("description"));
             return post;
         }
         

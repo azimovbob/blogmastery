@@ -22,4 +22,5 @@ public interface PostDao {
     void deletePost(int id);
     List<Comment> readAllComments(Post post);
     List<Hashtag> readAllHashtags(Post post);
+    List<Post> readPostByCategory(String tagName);
 }
