@@ -6,7 +6,7 @@
 package com.bobazimov.masteryblog.dao;
 
 import com.bobazimov.masteryblog.dto.Hashtag;
-import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -15,7 +15,8 @@ import java.util.List;
 public interface HashtagDao {
     Hashtag createHashtag(Hashtag hashtag);
     Hashtag readHashtagById(int id);
-    List<Hashtag> readHashtags();
+    Hashtag readHashtagByName(String name);
+    Set<Hashtag> readHashtags();
     void updateHashtag(Hashtag hashtag);
     void deleteHashtag(int id);
 }

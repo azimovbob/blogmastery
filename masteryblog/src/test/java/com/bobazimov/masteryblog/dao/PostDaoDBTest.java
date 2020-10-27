@@ -68,7 +68,7 @@ public class PostDaoDBTest {
         }
         
         
-        List<Hashtag> tags = tagDao.readHashtags();
+        Set<Hashtag> tags = tagDao.readHashtags();
         for(Hashtag tag: tags){
             tagDao.deleteHashtag(tag.getId());
         }
