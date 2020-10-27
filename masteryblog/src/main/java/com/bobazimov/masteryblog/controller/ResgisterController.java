@@ -5,11 +5,14 @@
  */
 package com.bobazimov.masteryblog.controller;
 
+import com.bobazimov.masteryblog.dto.Post;
 import com.bobazimov.masteryblog.dto.User;
+import com.bobazimov.masteryblog.service.HomeService;
 import com.bobazimov.masteryblog.service.UserService;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -35,6 +38,9 @@ public class ResgisterController {
     UserService service;
     
     @Autowired
+    HomeService homeService;
+    
+    @Autowired
     PasswordEncoder encoder;
     
     Set<ConstraintViolation<User>> violations = new HashSet<>();
@@ -43,6 +49,8 @@ public class ResgisterController {
     
     @GetMapping("/register")
     public String register(Model model, Integer error){
+        List<Post> blogs = homeService.getStaticPosts();
+        model.addAttribute("blogs", blogs);
         model.addAttribute("errors", violations);
         if(error != null){
             if(error == 1){

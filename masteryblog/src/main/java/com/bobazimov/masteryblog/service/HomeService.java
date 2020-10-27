@@ -70,13 +70,13 @@ public class HomeService {
         List<Post> posts = dao.readAllcontents();
         try {
            posts =  posts.stream()
-                .filter(p-> p.isIsaApproved())
+                .filter(p-> p.isIsaApproved() && !p.isIsStatic())
                 .filter(p-> p.getPostDate().compareTo(LocalDate.now()) <= 0)
                 .filter(p-> p.getExpDate().compareTo(LocalDate.now()) >= 0)
                 .collect(Collectors.toList()); 
         } catch (Exception e) {
             posts =  posts.stream()
-                .filter(p-> p.isIsaApproved())
+                .filter(p-> p.isIsaApproved() && !p.isIsStatic())
                 .filter(p-> p.getPostDate().compareTo(LocalDate.now()) <= 0)
                 .collect(Collectors.toList());
         }

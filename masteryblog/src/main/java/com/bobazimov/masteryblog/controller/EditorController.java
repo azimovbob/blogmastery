@@ -46,6 +46,8 @@ public class EditorController {
     @GetMapping("/editor")
     public String displayAllPosts(Model model){
         List<Post> blogs = service.getPosts();
+        List<Post> staticBlogs = homeService.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         model.addAttribute("blogs", blogs);
         model.addAttribute("errors", postViolations);
         return "editor";
@@ -94,6 +96,8 @@ public class EditorController {
             tagStr+="#" + tag.getName(); 
         }
         model.addAttribute("hashtags", tagStr);
+        List<Post> staticBlogs = homeService.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         model.addAttribute("blog",post);
         model.addAttribute("errors", postViolations);
         postViolations.clear();

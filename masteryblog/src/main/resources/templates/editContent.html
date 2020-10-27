@@ -28,7 +28,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="admin">Admin</a>
                     </li>
+                    <div>
+                        <li class="nav-item" th:each="staticBlog: ${staticBlogs}">
+                            <a class="nav-link" th:href="@{/displayBlog(id=${staticBlog.id})}"><span th:text="${staticBlog.title}"></span></a>
+                        </li>
+                     </div>
                 </ul>
+                
             </div>
             <div sec:authorize="isAuthenticated()">
                 <form class="form-inline" 
@@ -66,7 +72,7 @@
                     <div class="form-group row">
                         <label for="description" class="col-md-10">Description (max 255 characters)</label>
                         <div class="col-md-12">
-                            <textarea id="description" class="form-control" name="description"></textarea>
+                            <textarea id="description" class="form-control" name="description" th:field="${blog.description}"></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -159,7 +165,7 @@
 
 tinymce.init({
   selector: '#content',
-  plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+  plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons autoresize',
   menubar: 'file edit view insert format tools table help',
   toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
   toolbar_sticky: true,

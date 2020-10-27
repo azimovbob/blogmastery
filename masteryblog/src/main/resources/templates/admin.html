@@ -31,7 +31,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="admin">Admin</a>
                     </li>
+                    <div>
+                        <li class="nav-item" th:each="staticBlog: ${staticBlogs}">
+                            <a class="nav-link" th:href="@{/displayBlog(id=${staticBlog.id})}"><span th:text="${staticBlog.title}"></span></a>
+                        </li>
+                    </div>
                 </ul>
+                
             </div>
            
             <div sec:authorize="isAuthenticated()">

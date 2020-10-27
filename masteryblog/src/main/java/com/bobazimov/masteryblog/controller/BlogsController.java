@@ -31,6 +31,8 @@ public class BlogsController {
     
     @GetMapping("/blogs")
     public String displayBlogs(Model model){
+        List<Post> staticBlogs = homeService.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         List<Post> posts = homeService.getAllBlogs();
         model.addAttribute("blogs", posts);
         return "/blogs";
@@ -46,6 +48,8 @@ public class BlogsController {
     
     @GetMapping("displayBlogsByHashtag")
     public String displayBlogsBytag(Model model, String name){
+        List<Post> staticBlogs = homeService.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         List<Post> blogs = homeService.getSimilarBlogs(name);
         model.addAttribute("name", name);
         model.addAttribute("blogs", blogs);

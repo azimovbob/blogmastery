@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.bobazimov.masteryblog.service.AdminService;
 import com.bobazimov.masteryblog.service.CommentService;
+import com.bobazimov.masteryblog.service.HomeService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -37,6 +38,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminController {
     
     @Autowired
+    HomeService homeService;
+    
+    @Autowired
     AdminService service;
     
     @Autowired
@@ -52,6 +56,8 @@ public class AdminController {
     Set<ConstraintViolation<Post>> postViolations = new HashSet<>();
     @GetMapping("/admin")
     public String displayAdminPage(Model model){
+        List<Post> staticBlogs = homeService.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         List<User> users = service.getUsers();
         model.addAttribute("users", users);
         model.addAttribute("errors", violations);
@@ -61,6 +67,8 @@ public class AdminController {
     @GetMapping("/adminContent")
     public String adminManageContent(Model model){
         List<Post> blogs = service.readAllContetns();
+        List<Post> staticBlogs = homeService.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         model.addAttribute("blogs", blogs);
         model.addAttribute("errors", postViolations);
         return "/adminContent";
@@ -109,6 +117,8 @@ public class AdminController {
     @GetMapping("/editContent")
     public String editContent(Integer id, Model model){
         Post post = service.getPostById(id);
+        List<Post> staticBlogs = homeService.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         String tagStr = "";
         for(Hashtag tag: post.getHashtags()){
             tagStr+="#" + tag.getName(); 
@@ -197,7 +207,8 @@ public class AdminController {
     public String editUserDisplay(Model model, Integer id, Integer error){
         User user = service.getUserById(id);
         model.addAttribute("user", user);
-        
+        List<Post> staticBlogs = homeService.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         if(error != null){
             if(error == 1){
                 model.addAttribute("error", "Password did not match, password was not updated.");

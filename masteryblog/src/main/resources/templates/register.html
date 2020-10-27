@@ -21,6 +21,11 @@
                        <li class="nav-item">
                             <a class="nav-link" href="blogs">Blogs</a>
                         </li>
+                        <div>
+                            <li class="nav-item" th:each="blog: ${blogs}">
+                                <a class="nav-link" th:href="@{/displayBlog(id=${blog.id})}"><span th:text="${blog.title}"></span></a>
+                            </li>
+                        </div>
                         <div sec:authorize="hasRole('ROLE_ADMIN')">
                             <li class="nav-item">
                                 <a class="nav-link" href="admin">Admin</a>
@@ -46,7 +51,7 @@
                     th:text="${error.message}">Error message</p>
             </div>
             <div th:if="${error != null}" th:text="${error}"
-                     class="alert alert-danger" role="alert">
+                     class="alert alert-danger col-md-4" role="alert">
                     error text
             </div>
                 <form class="form-horizontal" 

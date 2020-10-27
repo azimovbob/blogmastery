@@ -48,14 +48,18 @@ public class HomeController {
     Set<ConstraintViolation<Comment>> violations = new HashSet<>();
     @GetMapping({"/", "home"})
     public String displayContent(Model model){
-        List<Post> posts = service.getStaticPosts();
+        List<Post> posts = service.getAllBlogs();
         model.addAttribute("blogs", posts);
+        List<Post> staticBlogs = service.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         return "home";
     }
     
     @GetMapping("/displayBlog")
     public String displayBlog(Integer id, Model model){
         Post post = service.getPostById(id);
+        List<Post> staticBlogs = service.getStaticPosts();
+        model.addAttribute("staticBlogs", staticBlogs);
         model.addAttribute("blog", post);
         model.addAttribute("errors", violations);
         return "displayBlog";
@@ -63,6 +67,8 @@ public class HomeController {
     
     @GetMapping("/resetPassword")
     public String resetPassword(Model model, Integer error){
+        List<Post> blogs = service.getStaticPosts();
+        model.addAttribute("blogs", blogs);
         if(error != null){
             if(error == 1){
                 model.addAttribute("error", "Password did not match, password was not updated.");

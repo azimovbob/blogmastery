@@ -28,7 +28,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="editor">Editor</a>
                     </li>
+                    <div>
+                        <li class="nav-item" th:each="staticBlog: ${staticBlogs}">
+                            <a class="nav-link" th:href="@{/displayBlog(id=${staticBlog.id})}"><span th:text="${staticBlog.title}"></span></a>
+                        </li>
+                     </div>
                 </ul>
+                
             </div>
             <div sec:authorize="isAuthenticated()">
                 <form class="form-inline" 
@@ -106,9 +112,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="isStatic" class="control-label col-md-4">Make static:</label>
+                        <label for="isStatic" class="control-label col-md-4" disabled>Make static:</label>
                         <div class="col-md-8">
-                            <input type="checkbox" id="isStatic" name="isStatic" th:checked="${blog.isStatic}"/>
+                            <input type="checkbox" id="isStatic" name="isStatic" th:checked="${blog.isStatic}" disabled=""/>
                         </div>
                     </div> 
                      <button type="sumbit" class="btn btn-primary">Edit Content</button>
